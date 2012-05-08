@@ -43,18 +43,6 @@ end
 ## Return the gradient at the given grid point.
 function v = gradp(x, y)
   persistent max32 = double(intmax('uint32'));
-  v = mod(cat(3, hash(1, x, y), hash(2, x, y)), max32);
+  v = cat(3, mixer96(1, x, y), mixer96(2, x, y));
   v = double(v) / max32 - 0.5;
-end
-
-## Return a hash of three integers. Got this algo from here:
-## http://www.concentric.net/~ttwang/tech/inthash.htm
-function a = hash(a, b, c)
-  a = uint64(bitxor(a,  b) + c);  # pre-mix
-
-  a = bitxor(bitxor(a, 61), bitshift(a, -16));
-  a = a + bitshift(a, 3);
-  a = bitxor(a, bitshift(a, -4));
-  a = a * uint64(0x27d4eb2d);
-  a = bitxor(a, bitshift(a, -15));
 end
