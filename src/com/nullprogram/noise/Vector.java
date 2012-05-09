@@ -124,6 +124,18 @@ public final class Vector implements Serializable, Cloneable {
     }
 
     /**
+     * Compute Math.abs() on each element.
+     * @return a new vector with each element abs()ed.
+     */
+    public Vector abs() {
+        double[] abs = new double[vector.length];
+        for (int i = 0; i < vector.length; i++) {
+            abs[i] = Math.abs(vector[i]);
+        }
+        return new Vector(false, abs);
+    }
+
+    /**
      * Returns this object, as Vector is immutable.
      * @return this object
      */

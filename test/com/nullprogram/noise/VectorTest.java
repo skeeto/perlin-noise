@@ -74,6 +74,16 @@ public class VectorTest {
     }
 
     @Test
+    public void absTest() {
+        Vector v = new Vector(2.1, -42.1, 17.0);
+        Vector abs = v.abs();
+        double delta = 1e-15;
+        assertEquals( 2.1, abs.get(0), delta);
+        assertEquals(42.1, abs.get(1), delta);
+        assertEquals(17.0, abs.get(2), delta);
+    }
+
+    @Test
     public void magnitudeTest() {
         Vector v = new Vector(3.43178, 0.27874, 4.32300);
         assertEquals(5.52658474611581, v.magnitude(), 1e-14);
