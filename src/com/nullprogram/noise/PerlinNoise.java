@@ -5,15 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
 /**
  * Provides Perlin noise which can be sampled in O(1) at any location.
  */
 public class PerlinNoise implements Noise {
 
-    private final int seed;
     private final int dimension;
+
+    private final Random rng;
 
     /** Use PRNG gradients for now, hashing some other time. */
     private final Map<Vector, Vector> gradients = new HashMap<>();
@@ -27,7 +28,7 @@ public class PerlinNoise implements Noise {
      * @param dimension  the dimension of the noise
      */
     public PerlinNoise(int seed, int dimension) {
-        this.seed = seed;
+        this.rng = new Random(seed);
         this.dimension = dimension;
 
         /* Pre-calulate vectors to find corners. */
@@ -66,7 +67,6 @@ public class PerlinNoise implements Noise {
     private Vector gradient(Vector p) {
         Vector gradient = gradients.get(p);
         if (gradient == null) {
-            Random rng = ThreadLocalRandom.current();
             double[] vector = new double[dimension];
             for (int i = 0; i < vector.length; i++) {
                 vector[i] = rng.nextDouble();
