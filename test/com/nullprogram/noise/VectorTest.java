@@ -104,6 +104,16 @@ public class VectorTest {
     }
 
     @Test
+    public void scalarAddTest() {
+        Vector v = new Vector(2.0, -3.0, 2.5);
+        Vector add = v.add(2.5);
+        double delta = 1e-15;
+        assertEquals( 4.5, add.get(0), delta);
+        assertEquals(-0.5, add.get(1), delta);
+        assertEquals( 5.0, add.get(2), delta);
+    }
+
+    @Test
     public void productTest() {
         Vector v = new Vector(2.5, 3.0, -3.5);
         double prod = v.prod();

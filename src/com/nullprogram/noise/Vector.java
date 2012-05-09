@@ -150,7 +150,7 @@ public final class Vector implements Serializable, Cloneable {
 
     /**
      * Multiply each element by a scalar.
-     * @param e  the exponent
+     * @param e  the scalar
      * @return a new vector
      */
     public Vector multiply(double s) {
@@ -159,6 +159,19 @@ public final class Vector implements Serializable, Cloneable {
             mult[i] = vector[i] * s;
         }
         return new Vector(false, mult);
+    }
+
+    /**
+     * Add a scalar to each element.
+     * @param s  the scalar
+     * @return a new vector
+     */
+    public Vector add(double s) {
+        double[] add = new double[vector.length];
+        for (int i = 0; i < vector.length; i++) {
+            add[i] = vector[i] + s;
+        }
+        return new Vector(false, add);
     }
 
     /**
