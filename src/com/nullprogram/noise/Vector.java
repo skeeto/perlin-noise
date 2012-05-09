@@ -136,6 +136,19 @@ public final class Vector implements Serializable, Cloneable {
     }
 
     /**
+     * Compute Math.pow() on each element.
+     * @param e  the exponent
+     * @return a new vector with each element pow()ed.
+     */
+    public Vector pow(double e) {
+        double[] pow = new double[vector.length];
+        for (int i = 0; i < vector.length; i++) {
+            pow[i] = Math.pow(vector[i], e);
+        }
+        return new Vector(false, pow);
+    }
+
+    /**
      * Returns this object, as Vector is immutable.
      * @return this object
      */
