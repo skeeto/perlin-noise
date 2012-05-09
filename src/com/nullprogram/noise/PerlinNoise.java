@@ -70,7 +70,7 @@ public class PerlinNoise implements Noise {
         if (gradient == null) {
             double[] vector = new double[dimension];
             for (int i = 0; i < vector.length; i++) {
-                vector[i] = rng.nextDouble();
+                vector[i] = rng.nextDouble() - 0.5;
             }
             gradient = new Vector(vector).unitize();
             gradients.put(p, gradient);
