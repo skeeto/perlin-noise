@@ -104,11 +104,23 @@ public final class Vector implements Serializable, Cloneable {
      */
     public Vector add(Vector v) {
         check(v);
-        double[] diff = new double[vector.length];
+        double[] sum = new double[vector.length];
         for (int i = 0; i < vector.length; i++) {
-            diff[i] = vector[i] + v.vector[i];
+            sum[i] = vector[i] + v.vector[i];
         }
-        return new Vector(false, diff);
+        return new Vector(false, sum);
+    }
+
+    /**
+     * Compute Math.floor() on each element.
+     * @return a new vector with each element floor()ed.
+     */
+    public Vector floor() {
+        double[] floor = new double[vector.length];
+        for (int i = 0; i < vector.length; i++) {
+            floor[i] = Math.floor(vector[i]);
+        }
+        return new Vector(false, floor);
     }
 
     /**

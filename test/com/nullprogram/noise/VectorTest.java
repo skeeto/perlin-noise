@@ -64,6 +64,16 @@ public class VectorTest {
     }
 
     @Test
+    public void floorTest() {
+        Vector v = new Vector(2.1388, -42.1785, 17.0530);
+        Vector floor = v.floor();
+        double delta = 1e-15;
+        assertEquals(  2.0, floor.get(0), delta);
+        assertEquals(-43.0, floor.get(1), delta);
+        assertEquals( 17.0, floor.get(2), delta);
+    }
+
+    @Test
     public void magnitudeTest() {
         Vector v = new Vector(3.43178, 0.27874, 4.32300);
         assertEquals(5.52658474611581, v.magnitude(), 1e-14);
