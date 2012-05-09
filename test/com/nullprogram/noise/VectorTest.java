@@ -125,4 +125,10 @@ public class VectorTest {
         Vector v = new Vector(3.43178, 0.27874, 4.32300);
         assertEquals(5.52658474611581, v.magnitude(), 1e-14);
     }
+
+    @Test
+    public void unitizeTest() {
+        Vector v = new Vector(5.703441, 8.076563, 7.470319);
+        assertEquals(1.0, v.unitize().magnitude(), 1e-15);
+    }
 }

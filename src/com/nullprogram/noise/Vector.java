@@ -187,6 +187,14 @@ public final class Vector implements Serializable, Cloneable {
     }
 
     /**
+     * Compute a unit vector for this vector.
+     * @return a new vector of a magnitude of 1.0
+     */
+    public Vector unitize() {
+        return multiply(1 / magnitude());
+    }
+
+    /**
      * Returns this object, as Vector is immutable.
      * @return this object
      */
