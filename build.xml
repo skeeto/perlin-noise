@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<project name="" default="jar" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+  <!-- Project-specific configuration -->
+  <property name="artifactId" value="noise"/>
+  <property name="description" value="Noise generation stuff."/>
+  <property name="version" value="0.1"/>
+  <property name="package.main" value="com.nullprogram.${artifactId}"/>
+  <property name="main.class" value="${package.main}.Launcher"/>
+  <property name="base.name" value="${artifactId}-${version}"/>
+
+  <!-- Standard Directory Layout -->
+  <property name="src.dir" value="src"/>
+  <property name="test.dir" value="test"/>
+  <property name="build.dir" value="build"/>
+  <property name="dist.dir" value="dist"/>
+
+  <!-- Targets -->
+
+  <target name="resolve" description="Retrieve dependencies with Ivy.">
+    <ivy:resolve log="download-only"/>
+    <ivy:cachepath conf="build" pathid="build.classpath"/>
+    <ivy:cachepath conf="default" pathid="runtime.classpath"/>
+    <ivy:cachefileset conf="default" setid="runtime.fileset"/>
+    <ivy:cachepath conf="test" pathid="test.classpath"/>
+    <ivy:cachepath conf="analysis" pathid="analysis.classpath"/>
+  </target>
+
+  <target name="compile" depends="resolve" description="Compile all sources.">
+    <mkdir dir="${dist.dir}"/>
+    <mkdir dir="${build.dir}/classes"/>
+    <javac srcdir="${src.dir}" destdir="${build.dir}/classes"
+           optimize="on" debug="on" deprecation="on" includeantruntime="no">
+      <compilerarg value="-Xlint"/>
+      <classpath refid="build.classpath"/>
+    </javac>
+    <copy todir="${build.dir}/classes">
+      <fileset dir="${src.dir}" excludes="**/*.java"/>
+    </copy>
+  </target>
+
+  <target name="jar" depends="compile"
+          description="Generate the jarfile distributable.">
+    <jar destfile="${dist.dir}/${base.name}.jar"
+         basedir="${build.dir}/classes">
+      <manifest>
+        <attribute name="Main-Class" value="${main.class}"/>
+      </manifest>
+    </jar>
+    <jar destfile="${dist.dir}/${base.name}-all.jar"
+         basedir="${build.dir}/classes">
+      <zipgroupfileset refid="runtime.fileset"/>
+      <manifest>
+        <attribute name="Main-Class" value="${main.class}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="run" depends="compile" description="Run the application.">
+    <java classname="${main.class}" classpath="${build.dir}/classes" fork="yes">
+      <classpath refid="runtime.classpath"/>
+    </java>
+  </target>
+
+  <target name="clean" description="Delete all generated files.">
+    <delete dir="${build.dir}"/>
+    <delete dir="${dist.dir}"/>
+    <delete file="cache.properties"/>
+  </target>
+
+  <target name="javadoc" depends="resolve,compile"
+          description="Generate documentation.">
+    <taskdef classname="lombok.delombok.ant.DelombokTask" name="delombok"
+             classpathref="build.classpath"/>
+    <delombok verbose="true" to="${build.dir}/src" from="${src.dir}">
+      <classpath refid="build.classpath"/>
+    </delombok>
+    <javadoc destdir="${dist.dir}/javadoc"
+             link="http://download.oracle.com/javase/6/docs/api/"
+             sourcepath="${build.dir}/src"
+             Doctitle="${ant.project.name} ${version}"
+             Windowtitle="${ant.project.name} ${version}">
+      <classpath refid="build.classpath"/>
+    </javadoc>
+  </target>
+
+  <target name="check" depends="resolve" description="Run Checkstyle.">
+    <taskdef resource="checkstyletask.properties"
+             classpathref="analysis.classpath"/>
+    <checkstyle config="checkstyle.xml">
+      <fileset dir="${src.dir}" includes="**/*.java"/>
+      <classpath path="${build.dir}/classes"/>
+    </checkstyle>
+  </target>
+
+  <!-- Unit testing (JUnit) -->
+
+  <target name="test-compile" depends="compile">
+    <mkdir dir="${build.dir}/test"/>
+    <javac srcdir="${test.dir}" destdir="${build.dir}/test"
+           optimize="on" debug="on" deprecation="on"
+           classpath="${build.dir}/classes" includeantruntime="no">
+      <compilerarg value="-Xlint"/>
+      <classpath refid="build.classpath"/>
+      <classpath refid="test.classpath"/>
+    </javac>
+    <copy todir="${build.dir}/test">
+      <fileset dir="${test.dir}" excludes="**/*.java"/>
+    </copy>
+  </target>
+
+  <target name="test" depends="test-compile" description="Run the unit tests.">
+    <junit fork="yes">
+      <classpath>
+        <pathelement path="${build.dir}/classes"/>
+        <pathelement path="${build.dir}/test"/>
+        <path refid="test.classpath"/>
+      </classpath>
+      <batchtest>
+        <formatter type="brief" usefile="false"/>
+        <fileset dir="${build.dir}/test"/>
+      </batchtest>
+    </junit>
+  </target>
+</project>

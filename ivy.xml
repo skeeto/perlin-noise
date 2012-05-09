@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<ivy-module version="2.0">
+  <info organisation="com.nullprogram" module=""/>
+  <configurations>
+    <conf name="default"/>
+    <conf name="build" extends="default" visibility="private"/>
+    <conf name="test" extends="build" visibility="private"/>
+    <conf name="analysis" extends="build" visibility="private"/>
+  </configurations>
+  <dependencies>
+    <!-- Run -->
+
+    <!-- Build -->
+    <dependency org="org.projectlombok" name="lombok" rev="0.10.4"
+                conf="build->default"/>
+    <dependency org="net.jcip" name="jcip-annotations" rev="1.0"
+                conf="build->default"/>
+
+    <!-- Unit Test -->
+    <dependency org="junit" name="junit" rev="4.10"
+                conf="test->default"/>
+
+    <!-- Static Analysis -->
+    <dependency org="com.puppycrawl.tools" name="checkstyle" rev="5.5"
+                conf="analysis->default"/>
+  </dependencies>
+</ivy-module>
