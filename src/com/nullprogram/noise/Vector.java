@@ -84,7 +84,7 @@ public final class Vector implements Serializable, Cloneable {
     }
 
     /**
-     * Compute a different vector between this and another vector.
+     * Compute a difference vector between this and another vector.
      * @param the other vector
      * @return a new vector with the difference
      */
