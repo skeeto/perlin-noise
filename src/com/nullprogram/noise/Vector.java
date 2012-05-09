@@ -149,6 +149,19 @@ public final class Vector implements Serializable, Cloneable {
     }
 
     /**
+     * Multiply each element by a scalar.
+     * @param e  the exponent
+     * @return a new vector
+     */
+    public Vector multiply(double s) {
+        double[] mult = new double[vector.length];
+        for (int i = 0; i < vector.length; i++) {
+            mult[i] = vector[i] * s;
+        }
+        return new Vector(false, mult);
+    }
+
+    /**
      * Returns this object, as Vector is immutable.
      * @return this object
      */
