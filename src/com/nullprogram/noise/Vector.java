@@ -162,6 +162,18 @@ public final class Vector implements Serializable, Cloneable {
     }
 
     /**
+     * Calculate the product of the elements of this vector.
+     * @return the product of the elements
+     */
+    public double prod() {
+        double prod = 1;
+        for (int i = 0; i < vector.length; i++) {
+            prod *= vector[i];
+        }
+        return prod;
+    }
+
+    /**
      * Returns this object, as Vector is immutable.
      * @return this object
      */

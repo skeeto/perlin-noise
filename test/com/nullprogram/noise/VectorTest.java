@@ -104,6 +104,13 @@ public class VectorTest {
     }
 
     @Test
+    public void productTest() {
+        Vector v = new Vector(2.5, 3.0, -3.5);
+        double prod = v.prod();
+        assertEquals(2.5 * 3.0 * -3.5, prod, 1e-15);
+    }
+
+    @Test
     public void magnitudeTest() {
         Vector v = new Vector(3.43178, 0.27874, 4.32300);
         assertEquals(5.52658474611581, v.magnitude(), 1e-14);
