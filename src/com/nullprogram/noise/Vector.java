@@ -1,9 +1,7 @@
 package com.nullprogram.noise;
 
 import java.io.Serializable;
-import java.lang.StringBuilder;
 import lombok.EqualsAndHashCode;
-import lombok.SneakyThrows;
 import net.jcip.annotations.Immutable;
 
 /**
@@ -22,7 +20,7 @@ public final class Vector implements Serializable, Cloneable {
      * Create a new vector from values.
      * @param values  the values of the new vector
      */
-    public Vector(double... values) {
+    public Vector(final double... values) {
         vector = values.clone();
     }
 
@@ -32,7 +30,7 @@ public final class Vector implements Serializable, Cloneable {
      * @param clone   true if a defensive copy should be made
      * @param values  the array to be used directly (if clone is false)
      */
-    private Vector(boolean clone, double[] values) {
+    private Vector(final boolean clone, final double[] values) {
         if (!clone) {
             vector = values;
         } else {
@@ -45,7 +43,7 @@ public final class Vector implements Serializable, Cloneable {
      * @param index  the index to query
      * @return the value at the index
      */
-    public double get(int index) {
+    public double get(final int index) {
         return vector[index];
     }
 
@@ -74,7 +72,7 @@ public final class Vector implements Serializable, Cloneable {
      * @param v  the other vector
      * @return the dot product
      */
-    public double dot(Vector v) {
+    public double dot(final Vector v) {
         check(v);
         double sum = 0;
         for (int i = 0; i < vector.length; i++) {
@@ -85,10 +83,10 @@ public final class Vector implements Serializable, Cloneable {
 
     /**
      * Compute a difference vector between this and another vector.
-     * @param the other vector
+     * @param v  the other vector
      * @return a new vector with the difference
      */
-    public Vector subtract(Vector v) {
+    public Vector subtract(final Vector v) {
         check(v);
         double[] diff = new double[vector.length];
         for (int i = 0; i < vector.length; i++) {
@@ -99,10 +97,10 @@ public final class Vector implements Serializable, Cloneable {
 
     /**
      * Compute the sum between this and another vector.
-     * @param the other vector
+     * @param v  the other vector
      * @return a new vector with the element-by-element sum
      */
-    public Vector add(Vector v) {
+    public Vector add(final Vector v) {
         check(v);
         double[] sum = new double[vector.length];
         for (int i = 0; i < vector.length; i++) {
@@ -140,7 +138,7 @@ public final class Vector implements Serializable, Cloneable {
      * @param e  the exponent
      * @return a new vector with each element pow()ed.
      */
-    public Vector pow(double e) {
+    public Vector pow(final double e) {
         double[] pow = new double[vector.length];
         for (int i = 0; i < vector.length; i++) {
             pow[i] = Math.pow(vector[i], e);
@@ -150,10 +148,10 @@ public final class Vector implements Serializable, Cloneable {
 
     /**
      * Multiply each element by a scalar.
-     * @param e  the scalar
+     * @param s  the scalar
      * @return a new vector
      */
-    public Vector multiply(double s) {
+    public Vector multiply(final double s) {
         double[] mult = new double[vector.length];
         for (int i = 0; i < vector.length; i++) {
             mult[i] = vector[i] * s;
@@ -166,7 +164,7 @@ public final class Vector implements Serializable, Cloneable {
      * @param s  the scalar
      * @return a new vector
      */
-    public Vector add(double s) {
+    public Vector add(final double s) {
         double[] add = new double[vector.length];
         for (int i = 0; i < vector.length; i++) {
             add[i] = vector[i] + s;
@@ -222,7 +220,7 @@ public final class Vector implements Serializable, Cloneable {
      * Check that this vector length matches the other.
      * @param v  the other vector
      */
-    private void check(Vector v) {
+    private void check(final Vector v) {
         if (vector.length != v.vector.length) {
             throw new IllegalArgumentException("Vector lengths must match");
         }

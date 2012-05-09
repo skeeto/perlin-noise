@@ -7,9 +7,22 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import lombok.val;
 
+/**
+ * The main class for launching the application.
+ */
 public final class Launcher {
 
-    public static void main(String[] args) {
+    /**
+     * Hidden constructor.
+     */
+    private Launcher() {
+    }
+
+    /**
+     * The main method.
+     * @param args  command line arguments
+     */
+    public static void main(final String[] args) {
         /* Create an image. */
         Noise noise = new PerlinNoise(0, 2);
         double max = 32.0;

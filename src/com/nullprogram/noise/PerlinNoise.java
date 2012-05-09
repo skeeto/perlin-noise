@@ -5,18 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Random;
 
 /**
  * Provides Perlin noise which can be sampled in O(1) at any location.
  */
-public class PerlinNoise implements Noise {
+public final class PerlinNoise implements Noise {
 
+    /** The dimension of this noise. */
     private final int dimension;
 
+    /** The PRNG for gradient generation (for now). */
     private final Random rng;
 
-    /** Use PRNG gradients for now, hashing some other time. */
+    /** Cache computed gradients. */
     private final Map<Vector, Vector> gradients = new HashMap<Vector, Vector>();
 
     /** Pre-calculated list of neighboring grid corner. */
@@ -27,7 +28,7 @@ public class PerlinNoise implements Noise {
      * @param seed       PRNG seed
      * @param dimension  the dimension of the noise
      */
-    public PerlinNoise(int seed, int dimension) {
+    public PerlinNoise(final int seed, final int dimension) {
         this.rng = new Random(seed);
         this.dimension = dimension;
 
@@ -46,7 +47,7 @@ public class PerlinNoise implements Noise {
     }
 
     @Override
-    public double sample(Vector p) {
+    public double sample(final Vector p) {
         double sum = 0;
         Vector pfloor = p.floor();
         for (Vector c : corners) {
@@ -65,7 +66,7 @@ public class PerlinNoise implements Noise {
      * @param p  the grid point
      * @return the gradient
      */
-    private Vector gradient(Vector p) {
+    private Vector gradient(final Vector p) {
         Vector gradient = gradients.get(p);
         if (gradient == null) {
             double[] vector = new double[dimension];
