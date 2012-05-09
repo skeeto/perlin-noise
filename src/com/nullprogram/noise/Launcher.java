@@ -22,7 +22,7 @@ public final class Launcher {
                 double y = j * step;
                 Vector p = new Vector(x, y);
                 double m = noise.sample(p);
-                float v = (float) ((m + 1f / 3f) * 3f / 2f);
+                float v = (float) ((m + 2f / 3f) * 2f / 3f);
                 int c = new Color(v, v, v).getRGB();
                 im.setRGB(i, j, c);
             }
