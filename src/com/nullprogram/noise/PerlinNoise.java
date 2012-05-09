@@ -17,10 +17,10 @@ public class PerlinNoise implements Noise {
     private final Random rng;
 
     /** Use PRNG gradients for now, hashing some other time. */
-    private final Map<Vector, Vector> gradients = new HashMap<>();
+    private final Map<Vector, Vector> gradients = new HashMap<Vector, Vector>();
 
     /** Pre-calculated list of neighboring grid corner. */
-    private final List<Vector> corners = new ArrayList<>();
+    private final List<Vector> corners = new ArrayList<Vector>();
 
     /**
      * Create new Perlin noise.
