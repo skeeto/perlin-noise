@@ -98,6 +98,20 @@ public final class Vector implements Serializable, Cloneable {
     }
 
     /**
+     * Compute the sum between this and another vector.
+     * @param the other vector
+     * @return a new vector with the element-by-element sum
+     */
+    public Vector add(Vector v) {
+        check(v);
+        double[] diff = new double[vector.length];
+        for (int i = 0; i < vector.length; i++) {
+            diff[i] = vector[i] + v.vector[i];
+        }
+        return new Vector(false, diff);
+    }
+
+    /**
      * Returns this object, as Vector is immutable.
      * @return this object
      */
