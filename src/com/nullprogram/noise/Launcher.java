@@ -12,8 +12,8 @@ public final class Launcher {
     public static void main(String[] args) {
         /* Create an image. */
         Noise noise = new PerlinNoise(0, 2);
-        double max = 8.0;
-        double step = 0.02;
+        double max = 32.0;
+        double step = 0.04;
         int size = (int) (max / step);
         val im = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < size; i++) {
