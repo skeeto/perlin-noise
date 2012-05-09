@@ -48,8 +48,9 @@ public class PerlinNoise implements Noise {
     @Override
     public double sample(Vector p) {
         double sum = 0;
+        Vector pfloor = p.floor();
         for (Vector c : corners) {
-            Vector q = p.floor().add(c);
+            Vector q = pfloor.add(c);
             Vector g = gradient(q);
             double m = g.dot(p.subtract(q));
             Vector t = p.subtract(q).abs().multiply(-1).add(1);
