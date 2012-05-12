@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import lombok.val;
+import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.linear.RealVector;
 
 /**
  * The main class for launching the application.
@@ -33,7 +35,7 @@ public final class Launcher {
             double x = i * step;
             for (int j = 0; j < size; j++) {
                 double y = j * step;
-                Vector p = new Vector(x, y);
+                RealVector p = new ArrayRealVector(new double[] {x, y});
                 double m = noise.sample(p);
                 float v = (float) ((m + 2f / 3f) * 2f / 3f);
                 int c = new Color(v, v, v).getRGB();

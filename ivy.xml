@@ -9,6 +9,8 @@
   </configurations>
   <dependencies>
     <!-- Run -->
+    <dependency org="org.apache.commons" name="commons-math3" rev="3.0"
+                conf="default->default"/>
 
     <!-- Build -->
     <dependency org="org.projectlombok" name="lombok" rev="0.10.4"

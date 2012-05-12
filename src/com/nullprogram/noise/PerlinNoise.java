@@ -5,11 +5,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import org.apache.commons.math3.analysis.UnivariateFunction;
+import org.apache.commons.math3.analysis.function.Abs;
+import org.apache.commons.math3.analysis.function.Floor;
+import org.apache.commons.math3.analysis.function.Power;
+import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.linear.RealVector;
 
 /**
  * Provides Perlin noise which can be sampled in O(1) at any location.
  */
 public final class PerlinNoise implements Noise {
+
+    private static final UnivariateFunction FLOOR = new Floor();
+    private static final UnivariateFunction ABS = new Abs();
+    private static final UnivariateFunction POW2 = new Power(2);
+    private static final UnivariateFunction POW3 = new Power(3);
 
     /** The dimension of this noise. */
     private final int dimension;
@@ -18,10 +29,11 @@ public final class PerlinNoise implements Noise {
     private final Random rng;
 
     /** Cache computed gradients. */
-    private final Map<Vector, Vector> gradients = new HashMap<Vector, Vector>();
+    private final Map<RealVector, RealVector> gradients =
+        new HashMap<RealVector, RealVector>();
 
     /** Pre-calculated list of neighboring grid corner. */
-    private final List<Vector> corners = new ArrayList<Vector>();
+    private final List<RealVector> corners = new ArrayList<RealVector>();
 
     /**
      * Create new Perlin noise.
@@ -42,21 +54,26 @@ public final class PerlinNoise implements Noise {
                     v[n] = 0;
                 }
             }
-            corners.add(new Vector(v));
+            corners.add(new ArrayRealVector(v));
         }
     }
 
     @Override
-    public double sample(final Vector p) {
+    public double sample(final RealVector p) {
         double sum = 0;
-        Vector pfloor = p.floor();
-        for (Vector c : corners) {
-            Vector q = pfloor.add(c);
-            Vector g = gradient(q);
-            double m = g.dot(p.subtract(q));
-            Vector t = p.subtract(q).abs().multiply(-1).add(1);
-            Vector w = t.pow(2).multiply(3).subtract(t.pow(3).multiply(2));
-            sum += w.prod() * m;
+        RealVector pfloor = p.map(FLOOR);
+        for (RealVector c : corners) {
+            RealVector q = pfloor.add(c);
+            RealVector g = gradient(q);
+            double m = g.dotProduct(p.subtract(q));
+            RealVector t = p.subtract(q).map(ABS).mapMultiply(-1.0).mapAdd(1.0);
+            RealVector w = t.map(POW2).mapMultiply(3)
+                .subtract(t.map(POW3).mapMultiply(2));
+            double prod = 1;
+            for (int i = 0; i < w.getDimension(); i++) {
+                prod *= w.getEntry(i);
+            }
+            sum += prod * m;
         }
         return sum;
     }
@@ -66,14 +83,15 @@ public final class PerlinNoise implements Noise {
      * @param p  the grid point
      * @return the gradient
      */
-    private Vector gradient(final Vector p) {
-        Vector gradient = gradients.get(p);
+    private RealVector gradient(final RealVector p) {
+        RealVector gradient = gradients.get(p);
         if (gradient == null) {
             double[] vector = new double[dimension];
             for (int i = 0; i < vector.length; i++) {
                 vector[i] = rng.nextDouble() - 0.5;
             }
-            gradient = new Vector(vector).unitize();
+            gradient = new ArrayRealVector(vector);
+            gradient.unitize();
             gradients.put(p, gradient);
         }
         return gradient;
