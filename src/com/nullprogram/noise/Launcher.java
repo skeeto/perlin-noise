@@ -4,12 +4,20 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
+import lombok.SneakyThrows;
 import lombok.val;
 
 public final class Launcher {
 
+    @SneakyThrows
     public static void main(String[] args) {
+        ClPerlinNoise cl = new ClPerlinNoise(0, 2, 2, 0.2f);
+        float[][] result = cl.sample(0f);
+        Arrays.toString(result);
+        System.exit(0);
+
         /* Create an image. */
         Noise noise = new PerlinNoise(0, 2);
         double max = 32.0;
