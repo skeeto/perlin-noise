@@ -44,8 +44,10 @@ public class ClPerlinNoise {
     private final float step;
 
     private final FloatBuffer gradients;
+    private final FloatBuffer params;
     private final FloatBuffer values;
     private final CLMem gradientsBuf;
+    private final CLMem paramsBuf;
     private final CLMem valuesBuf;
 
     private final CLPlatform platform;
@@ -71,6 +73,11 @@ public class ClPerlinNoise {
         }
         gradients = Lwjgl.toBuffer(vectors);
         values = BufferUtils.createFloatBuffer(size);
+        params = BufferUtils.createFloatBuffer(4);
+        params.put(0, 0f); // z
+        params.put(1, width);
+        params.put(2, height);
+        params.put(3, step);
 
         /* Init OpenCL */
         platform = CLPlatform.getPlatforms().get(0);
@@ -84,6 +91,10 @@ public class ClPerlinNoise {
             = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
                              gradients, null);
         clEnqueueWriteBuffer(queue, gradientsBuf, 1, 0, gradients, null, null);
+        paramsBuf
+            = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
+                             params, null);
+        clEnqueueWriteBuffer(queue, paramsBuf, 1, 0, params, null, null);
         valuesBuf
             = clCreateBuffer(context, CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
                              values, null);
@@ -94,14 +105,19 @@ public class ClPerlinNoise {
         Util.checkCLError(clBuildProgram(program, devices.get(0), "", null));
         kernel = clCreateKernel(program, "perlin3d", null);
         kernel.setArg(0, gradientsBuf);
-        kernel.setArg(1, valuesBuf);
+        kernel.setArg(1, paramsBuf);
+        kernel.setArg(2, valuesBuf);
     }
 
     public float[][] sample(float z) {
+        params.put(0, z);
+        clEnqueueWriteBuffer(queue, paramsBuf, 1, 0, params, null, null);
+        clFinish(queue);
+
         PointerBuffer work = BufferUtils.createPointerBuffer(1);
         work.put(0, values.capacity());
-        clEnqueueNDRangeKernel(queue, kernel, 1, null,
-                               work, null, null, null);
+        Util.checkCLError(clEnqueueNDRangeKernel(queue, kernel, 1, null,
+                                                 work, null, null, null));
 
         /* Gather results. */
         clEnqueueReadBuffer(queue, valuesBuf, 1, 0, values, null, null);
@@ -114,14 +130,18 @@ public class ClPerlinNoise {
         for (int y = 0; y < wwidth; y++) {
             for (int x = 0; x < wheight; x++) {
                 results[x][y] = values.get();
-                System.out.println(results[x][y]);
+                System.out.printf("%5.2f ", results[x][y]);
             }
+            System.out.println();
         }
         return results;
     }
 
     public void dispose() {
         clReleaseKernel(kernel);
+        clReleaseMemObject(gradientsBuf);
+        clReleaseMemObject(paramsBuf);
+        clReleaseMemObject(valuesBuf);
         clReleaseProgram(program);
         clReleaseCommandQueue(queue);
         clReleaseContext(context);
