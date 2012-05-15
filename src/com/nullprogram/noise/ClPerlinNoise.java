@@ -114,6 +114,7 @@ public class ClPerlinNoise {
         clEnqueueWriteBuffer(queue, paramsBuf, 1, 0, params, null, null);
         clFinish(queue);
 
+        values.rewind();
         PointerBuffer work = BufferUtils.createPointerBuffer(1);
         work.put(0, values.capacity());
         Util.checkCLError(clEnqueueNDRangeKernel(queue, kernel, 1, null,
