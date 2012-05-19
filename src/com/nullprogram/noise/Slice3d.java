@@ -25,12 +25,12 @@ public class Slice3d implements Runnable {
         int count = 0;
         for (float z = 0; z < depth; z += step, count++) {
             for (int i = 0; i < im.getWidth(); i++) {
-                double x = i * step;
+                float x = i * step;
                 for (int j = 0; j < im.getHeight(); j++) {
-                    double y = j * step;
+                    float y = j * step;
                     Vector p = new Vector(x, y, z);
-                    double m = noise.sample(p);
-                    float v = (float) ((m + 2f / 3f) * 2f / 3f);
+                    float m = noise.sample(p);
+                    float v = ((m + 2f / 3f) * 2f / 3f);
                     int c = new Color(v, v, v).getRGB();
                     im.setRGB(i, j, c);
                 }

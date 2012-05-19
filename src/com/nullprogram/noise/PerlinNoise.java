@@ -33,7 +33,7 @@ public class PerlinNoise implements Noise {
 
         /* Pre-calulate vectors to find corners. */
         for (int i = 0; i < 1 << dimension; i++) {
-            double[] v = new double[dimension];
+            float[] v = new float[dimension];
             for (int n = 0; n < dimension; n++) {
                 if ((i & (1 << n)) != 0) {
                     v[n] = 1;
@@ -46,13 +46,13 @@ public class PerlinNoise implements Noise {
     }
 
     @Override
-    public double sample(Vector p) {
-        double sum = 0;
+    public float sample(Vector p) {
+        float sum = 0;
         Vector pfloor = p.floor();
         for (Vector c : corners) {
             Vector q = pfloor.add(c);
             Vector g = gradient(q);
-            double m = g.dot(p.subtract(q));
+            float m = g.dot(p.subtract(q));
             Vector t = p.subtract(q).abs().multiply(-1).add(1);
             Vector w = t.pow(2).multiply(3).subtract(t.pow(3).multiply(2));
             sum += w.prod() * m;
@@ -68,9 +68,9 @@ public class PerlinNoise implements Noise {
     private Vector gradient(Vector p) {
         Vector gradient = gradients.get(p);
         if (gradient == null) {
-            double[] vector = new double[dimension];
+            float[] vector = new float[dimension];
             for (int i = 0; i < vector.length; i++) {
-                vector[i] = rng.nextDouble() - 0.5;
+                vector[i] = rng.nextFloat() - 0.5f;
             }
             gradient = new Vector(vector).unitize();
             gradients.put(p, gradient);

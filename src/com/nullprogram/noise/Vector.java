@@ -16,13 +16,13 @@ import net.jcip.annotations.Immutable;
 public final class Vector implements Serializable, Cloneable {
 
     /** The actual vector. */
-    private final double[] vector;
+    private final float[] vector;
 
     /**
      * Create a new vector from values.
      * @param values  the values of the new vector
      */
-    public Vector(double... values) {
+    public Vector(float... values) {
         vector = values.clone();
     }
 
@@ -32,7 +32,7 @@ public final class Vector implements Serializable, Cloneable {
      * @param clone   true if a defensive copy should be made
      * @param values  the array to be used directly (if clone is false)
      */
-    private Vector(boolean clone, double[] values) {
+    private Vector(boolean clone, float[] values) {
         if (!clone) {
             vector = values;
         } else {
@@ -45,7 +45,7 @@ public final class Vector implements Serializable, Cloneable {
      * @param index  the index to query
      * @return the value at the index
      */
-    public double get(int index) {
+    public float get(int index) {
         return vector[index];
     }
 
@@ -61,12 +61,12 @@ public final class Vector implements Serializable, Cloneable {
      * Compute the magnitude of this vector.
      * @return the magnitude of this vector
      */
-    public double magnitude() {
-        double sum = 0;
+    public float magnitude() {
+        float sum = 0;
         for (int i = 0; i < vector.length; i++) {
             sum += vector[i] * vector[i];
         }
-        return Math.sqrt(sum);
+    return (float) Math.sqrt(sum);
     }
 
     /**
@@ -74,9 +74,9 @@ public final class Vector implements Serializable, Cloneable {
      * @param v  the other vector
      * @return the dot product
      */
-    public double dot(Vector v) {
+    public float dot(Vector v) {
         check(v);
-        double sum = 0;
+        float sum = 0;
         for (int i = 0; i < vector.length; i++) {
             sum += vector[i] * v.vector[i];
         }
@@ -90,7 +90,7 @@ public final class Vector implements Serializable, Cloneable {
      */
     public Vector subtract(Vector v) {
         check(v);
-        double[] diff = new double[vector.length];
+        float[] diff = new float[vector.length];
         for (int i = 0; i < vector.length; i++) {
             diff[i] = vector[i] - v.vector[i];
         }
@@ -104,7 +104,7 @@ public final class Vector implements Serializable, Cloneable {
      */
     public Vector add(Vector v) {
         check(v);
-        double[] sum = new double[vector.length];
+        float[] sum = new float[vector.length];
         for (int i = 0; i < vector.length; i++) {
             sum[i] = vector[i] + v.vector[i];
         }
@@ -116,9 +116,9 @@ public final class Vector implements Serializable, Cloneable {
      * @return a new vector with each element floor()ed.
      */
     public Vector floor() {
-        double[] floor = new double[vector.length];
+        float[] floor = new float[vector.length];
         for (int i = 0; i < vector.length; i++) {
-            floor[i] = Math.floor(vector[i]);
+            floor[i] = (float) Math.floor(vector[i]);
         }
         return new Vector(false, floor);
     }
@@ -128,7 +128,7 @@ public final class Vector implements Serializable, Cloneable {
      * @return a new vector with each element abs()ed.
      */
     public Vector abs() {
-        double[] abs = new double[vector.length];
+        float[] abs = new float[vector.length];
         for (int i = 0; i < vector.length; i++) {
             abs[i] = Math.abs(vector[i]);
         }
@@ -140,10 +140,10 @@ public final class Vector implements Serializable, Cloneable {
      * @param e  the exponent
      * @return a new vector with each element pow()ed.
      */
-    public Vector pow(double e) {
-        double[] pow = new double[vector.length];
+    public Vector pow(float e) {
+        float[] pow = new float[vector.length];
         for (int i = 0; i < vector.length; i++) {
-            pow[i] = Math.pow(vector[i], e);
+            pow[i] = (float) Math.pow(vector[i], e);
         }
         return new Vector(false, pow);
     }
@@ -153,8 +153,8 @@ public final class Vector implements Serializable, Cloneable {
      * @param e  the scalar
      * @return a new vector
      */
-    public Vector multiply(double s) {
-        double[] mult = new double[vector.length];
+    public Vector multiply(float s) {
+        float[] mult = new float[vector.length];
         for (int i = 0; i < vector.length; i++) {
             mult[i] = vector[i] * s;
         }
@@ -166,8 +166,8 @@ public final class Vector implements Serializable, Cloneable {
      * @param s  the scalar
      * @return a new vector
      */
-    public Vector add(double s) {
-        double[] add = new double[vector.length];
+    public Vector add(float s) {
+        float[] add = new float[vector.length];
         for (int i = 0; i < vector.length; i++) {
             add[i] = vector[i] + s;
         }
@@ -178,8 +178,8 @@ public final class Vector implements Serializable, Cloneable {
      * Calculate the product of the elements of this vector.
      * @return the product of the elements
      */
-    public double prod() {
-        double prod = 1;
+    public float prod() {
+        float prod = 1;
         for (int i = 0; i < vector.length; i++) {
             prod *= vector[i];
         }

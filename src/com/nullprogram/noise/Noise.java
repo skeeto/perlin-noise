@@ -10,5 +10,5 @@ public interface Noise {
      * @param p  the position to query
      * @return the noise value at the selected position
      */
-    double sample(Vector p);
+    float sample(Vector p);
 }
