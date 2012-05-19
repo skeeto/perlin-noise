@@ -56,7 +56,8 @@ public class ClPerlinNoise {
     private final CLProgram program;
     private final CLKernel kernel;
 
-    public ClPerlinNoise(int seed, int width, int height, float step)
+    public ClPerlinNoise(int seed, float step,
+                         int width, int height, int depth)
         throws LWJGLException {
 
         this.width = width;
@@ -64,7 +65,7 @@ public class ClPerlinNoise {
         this.step = step;
 
         /* Prepare gradients. */
-        int gsize = (width + 1) * (height + 1);
+        int gsize = (width + 1) * (height + 1) * (depth + 1);
         int size = (int) (width / step * height / step);
         Random rng = new Random(seed);
         float[] vectors = new float[3 * gsize];
@@ -73,11 +74,12 @@ public class ClPerlinNoise {
         }
         gradients = Lwjgl.toBuffer(vectors);
         values = BufferUtils.createFloatBuffer(size);
-        params = BufferUtils.createFloatBuffer(4);
+        params = BufferUtils.createFloatBuffer(5);
         params.put(0, 0f); // z
-        params.put(1, width);
-        params.put(2, height);
-        params.put(3, step);
+        params.put(1, step);
+        params.put(2, width);
+        params.put(3, height);
+        params.put(4, depth);
 
         /* Init OpenCL */
         platform = CLPlatform.getPlatforms().get(0);
@@ -131,9 +133,7 @@ public class ClPerlinNoise {
         for (int y = 0; y < wwidth; y++) {
             for (int x = 0; x < wheight; x++) {
                 results[x][y] = values.get();
-                System.out.printf("%5.2f ", results[x][y]);
             }
-            System.out.println();
         }
         return results;
     }
