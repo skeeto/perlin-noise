@@ -9,9 +9,9 @@ float rand(vec2 co){
 }
 
 vec3 grad(vec3 p) {
-    return vec3(rand(seed * vec2(p.x, p.y)),
+    return vec3(rand(vec2(p.x * seed, p.y)),
                 rand(seed * vec2(p.x, p.y) * p.z),
-                rand(seed * vec2(p.x, p.y) + p.z));
+                rand(vec2(p.x, p.y + seed) + p.z));
 }
 
 vec3 pow3(vec3 v, float p) {
@@ -77,7 +77,6 @@ void main() {
         w110.x * w110.y * w110.z * m110 +
         w111.x * w111.y * w111.z * m111;
 
-    //gl_FragColor = vec4(rand(gl_FragCoord.xy), 0.0, 0.0, 1.0);
     float color = ((sum + 2. / 3.) * 2. / 3.);
     gl_FragColor = vec4(color, color, color, 1.);
 }
