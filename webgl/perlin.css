@@ -1,0 +1,9 @@
+body {
+    font-family: sans-serif;
+    background: lightblue;
+}
+
+canvas {
+    display: block;
+    margin: auto;
+}
