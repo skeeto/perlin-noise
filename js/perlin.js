@@ -7,7 +7,7 @@ function Perlin(width, height) {
 Perlin.random = function() {
     return new Vec3(Math.random() * 2 - 1,
                     Math.random() * 2 - 1,
-                    Math.random() * 2 - 1);
+                    Math.random() * 2 - 1).normalize();
 };
 
 Perlin.prototype.gradient = function(vec) {
