@@ -249,9 +249,12 @@ VecN.convenience = function(n) {
 };
 
 /* Now create vectors of lengths 2, 3, and 4. */
-VecN.Vec2 = VecN.make(2);
-VecN.Vec3 = VecN.make(3);
-VecN.Vec4 = VecN.make(4);
+
+var Vec2 = VecN.Vec2 = VecN.make(2);
 var vec2 = VecN.convenience(2);
+
+var Vec3 = VecN.Vec3 = VecN.make(3);
 var vec3 = VecN.convenience(3);
+
+var Vec4 = VecN.Vec4 = VecN.make(4);
 var vec4 = VecN.convenience(4);
