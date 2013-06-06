@@ -1,21 +1,22 @@
-function Perlin() {
-    this.cache = {};
+function Perlin(width, height) {
+    this.width = width;
+    this.height = height;
+    this.cache = [];
 }
 
 Perlin.random = function() {
-    function rand() {
-        return Math.random() * 2 - 1;
-    }
-    return vec3(rand(), rand(), rand());
+    return new Vec3(Math.random() * 2 - 1,
+                    Math.random() * 2 - 1,
+                    Math.random() * 2 - 1);
 };
 
 Perlin.prototype.gradient = function(vec) {
-    var result = this.cache[vec];
-    if (result) {
-        return result;
-    } else {
-        return this.cache[vec] = Perlin.random();
+    var p = (vec.z * this.width * this.height) +
+            (vec.y * this.width) + vec.x;
+    while (this.cache.length < p + 1) {
+        this.cache.push(Perlin.random());
     }
+    return this.cache[p];
 };
 
 Perlin.prototype.sample = function(point) {
