@@ -12,7 +12,7 @@ if (window.requestAnimationFrame == null) {
 var display;  // for skewer
 
 function draw() {
-    display.depth += 0.02;
+    display.depth += 0.03;
     display.render();
     window.requestAnimationFrame(draw);
 }
