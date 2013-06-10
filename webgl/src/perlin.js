@@ -19,6 +19,8 @@ function draw() {
 
 window.addEventListener('load', function() {
     var canvas = document.getElementById('screen');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     try {
         var gl = canvas.getContext('webgl') ||
                  canvas.getContext('experimental-webgl');
@@ -29,4 +31,11 @@ window.addEventListener('load', function() {
         throw e;
     }
     window.requestAnimationFrame(draw);
+});
+
+window.addEventListener('resize', function() {
+    var canvas = document.getElementById('screen');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    display.gl.viewport(0, 0, canvas.width, canvas.height);
 });

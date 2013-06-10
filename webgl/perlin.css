@@ -6,4 +6,7 @@ body {
 canvas {
     display: block;
     margin: auto;
+    left: 0px;
+    top: 0px;
+    position: absolute;
 }
