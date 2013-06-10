@@ -5,13 +5,13 @@ uniform float depth;
 uniform float seed;
 
 float rand(vec2 co){
-    return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
+    return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453) - .5;
 }
 
 vec3 grad(vec3 p) {
-    return vec3(rand(vec2(p.x * seed, p.y)),
-                rand(seed * vec2(p.x, p.y) * p.z),
-                rand(vec2(p.x, p.y + seed) + p.z));
+    return normalize(vec3(rand(vec2(p.x * seed, p.y)),
+                          rand(seed * vec2(p.x, p.y) * p.z),
+                          rand(vec2(p.x, p.y + seed) + p.z)));
 }
 
 vec3 pow3(vec3 v, float p) {
